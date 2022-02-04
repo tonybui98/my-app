@@ -35,6 +35,7 @@ import overlay_banner_5 from '../imgs/11.png';
 // 
 import banner_tk_web from '../imgs/thiet-ke-website.png';
 import banner_tk_web2 from '../imgs/bg_gt_3.png';
+import LayoutHome from '../components/LayoutHome';
 
 const TimeLine = [
   {
@@ -65,7 +66,7 @@ const TimeLine = [
 ];
 
 
-function MyRotatingBox2() {
+export const MyRotatingBox2 = () => {
   const myMesh:any = React.useRef();
   const [hovered, hover] = useState(false)
   const [rotation, setRotation] = useState([0, 0, 0, 0]);
@@ -82,7 +83,7 @@ function MyRotatingBox2() {
     >
        <Text
         font={'Josefin Sans'}
-        scale={[3, 5, 5]}
+        scale={[5, 5, 5]}
         color="white" // default
         anchorX="center" // default
         anchorY="middle" // default
@@ -90,7 +91,7 @@ function MyRotatingBox2() {
         SOUTHTEAM
       </Text>
       <boxBufferGeometry
-        args={[3, 3, 3]}/>
+        args={[4, 4, 4]}/>
       <pointLight position={[5, 5, 5]} />
       <meshPhongMaterial 
         attach="material" 
@@ -115,7 +116,7 @@ function MyRotatingBox() {
         onPointerOut={(event) => hover(false)}
     >
       <boxBufferGeometry
-        args={[3, 3, 3]}/>
+        args={[4, 4, 4]}/>
       <meshPhongMaterial 
         attach="material" 
         color={hovered ? 'red' : '#ffe4c4'} 
@@ -200,10 +201,10 @@ const Three = () => {
                       Timing = -TimelineAnimating;
                     } 
                     return(
-                      <TimeLineList
+                      <li className='col' 
                           key={index}>
                             <div  
-                              className="d-block position-relative"
+                              className="d-block"
                               data-scroll
                               data-scroll-speed={Timing}
                               data-scroll-position={Direction}
@@ -213,13 +214,13 @@ const Three = () => {
                               >{index + 1}</CounterTimeline>
                                 
                             <TimeLineContent>
-                              <div className='w-100'>
+                              <div>
                                 <TimeLineImg src={val.Component} />
                                 <TimeLineTitle className='josefin'>{val.Title}</TimeLineTitle>
                               </div>
                             </TimeLineContent>
                             </div>
-                        </TimeLineList>);
+                        </li>);
                   })}
                 </ul>
               </Col>
@@ -228,7 +229,7 @@ const Three = () => {
      <Section>
       <Container>
           <Row className="align-items-center">
-              <Col className='m-auto position-relative d-none d-md-block' md={4}>
+              <Col className='m-auto position-relative' xs={4}>
                 <BoxedLeft
                   data-scroll
                   data-scroll-speed="0.4"
@@ -241,7 +242,7 @@ const Three = () => {
                   </Canvas>
                 </BoxedLeft>
               </Col>
-              <Col className='m-auto' md={8} xs={12}>
+              <Col className='m-auto' xs={8}>
                 <h3 
                   className="josefin"
                 >
@@ -251,6 +252,16 @@ const Three = () => {
           </Row>
         </Container>
       </Section>
+      <Section>
+        <Container>
+          <Row>
+            <Col xs={12}>
+                  <h3 className='fw-bolder text-center mb-3'>HÃY CHỌN NHU CẦU THIẾT KẾ WEBSITE CỦA BẠN</h3>
+                  <LayoutHome />
+              </Col>
+            </Row>
+          </Container>
+        </Section>
       <Section>
           <Row>
                 <Col md={4} sm={12} xs={12}>
@@ -263,17 +274,13 @@ const Three = () => {
                     >
                       <RotateSectionTitle 
                       className='josefin'
-                      >Dịch vụ của chúng tôi</RotateSectionTitle>
+                      >Dịch vụ</RotateSectionTitle>
                   </SectionTitle>
                 </Col>
                 <Col md={7} sm={12} xs={12}>
                     <Row className={'p-3'}>
-                      <Col xs={12} md={6}>
-                            <BlockPortfolio  
-                                data-scroll
-                                data-scroll-speed="-1.1"
-                                data-scroll-position="bottom"
-                                data-scroll-direction="horizontal">
+                      <Col xs={6}>
+                            <BlockPortfolio >
                                   <LinkOverLay to={'/demo'}></LinkOverLay>
                                   <RotateStatus>Web Design</RotateStatus>
                                   <ImgResponsive src={bg_banner_1} />
@@ -284,12 +291,8 @@ const Three = () => {
                                   </PortfolioInfo>
                             </BlockPortfolio>
                       </Col>
-                      <Col xs={12} md={6}>
-                          <BlockPortfolio 
-                                data-scroll
-                                data-scroll-speed="-1.1"
-                                data-scroll-position="bottom"
-                                data-scroll-direction="horizontal">
+                      <Col xs={6}>
+                          <BlockPortfolio >
                                 <LinkOverLay to={'/demo'}></LinkOverLay>
                                 <RotateStatus>Google Adwords</RotateStatus>
                                 <ImgResponsive src={bg_banner_2} />
@@ -300,12 +303,8 @@ const Three = () => {
                                 </PortfolioInfo>
                             </BlockPortfolio>
                       </Col>
-                      <Col xs={12} md={4}>
-                        <BlockPortfolio 
-                                data-scroll
-                                data-scroll-speed="1.1"
-                                data-scroll-position="bottom"
-                                data-scroll-direction="horizontal">
+                      <Col xs={6} md={4}>
+                        <BlockPortfolio >
                               <LinkOverLay to={'/demo'}></LinkOverLay>
                               <RotateStatus>Quản trị Website</RotateStatus>
                               <ImgResponsive src={bg_banner_3} />
@@ -316,12 +315,8 @@ const Three = () => {
                               </PortfolioInfo>
                           </BlockPortfolio>
                       </Col>
-                      <Col xs={12} md={4}>
-                          <BlockPortfolio 
-                          data-scroll
-                          data-scroll-speed="1.1"
-                          data-scroll-position="bottom"
-                          data-scroll-direction="horizontal">
+                      <Col xs={6} md={4}>
+                          <BlockPortfolio >
                                 <LinkOverLay to={'/demo'}></LinkOverLay>
                                 <RotateStatus>Marketing Online</RotateStatus>
                                 <ImgResponsive src={bg_banner_4} />
@@ -332,12 +327,8 @@ const Three = () => {
                                 </PortfolioInfo>
                             </BlockPortfolio>
                       </Col>
-                      <Col xs={12} md={4}>
-                          <BlockPortfolio 
-                                data-scroll
-                                data-scroll-speed="1.1"
-                                data-scroll-position="bottom"
-                                data-scroll-direction="horizontal">
+                      <Col xs={6} md={4}>
+                          <BlockPortfolio >
                                 <LinkOverLay to={'/demo'}></LinkOverLay>
                                 <RotateStatus>Viết bài chuẩn SEO</RotateStatus>
                                 <ImgResponsive src={bg_banner_5} />
@@ -359,9 +350,8 @@ const Three = () => {
 export default Three;
 export const RotateSectionTitle = Styled.h2`
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 6rem;
   color: red;
-  opacity: .5;
   @media (min-width: 768px){
     text-transform: uppercase;
     transform: rotate(-90deg);
@@ -377,10 +367,10 @@ export const PortfolioInfo = Styled.div`
   z-index: 5;
   text-align: center;
   width: 100%;
-  top: 50%;
+  top: 42%;
   left: 0;
   padding: 0 20px;
-  transform: translateY(-60%);
+  transform: translateY(10px);
   transition: all .3s ease-in-out;
   h4{
     position: relative;
@@ -393,12 +383,13 @@ export const PortfolioInfo = Styled.div`
         bottom: 0;
         height: 2px;
         width: 30px;
-        background-color: rgba(255,255,255,.3);
+        background-color: rgba(38,35,40,.3);
         transition: all 1s ease;
     }
   }
   span{
     font-size: 15px;
+    color: rgba(38,35,40,.7);
     line-height: 25px;
     word-spacing: 1px;
   }
@@ -422,13 +413,12 @@ export const RotateStatus = Styled.span`
   z-index: 7;
   bottom: 25px;
   left: 16px;
-  font-size: 16px;
+  font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: left;
   display: block;
   width: 15px;
-  font-weight: bold;
   white-space: nowrap;
   color: rgba(38,35,40,.9);
   transform: rotate(-90deg);
@@ -449,13 +439,11 @@ export const BlockPortfolio = Styled.div`
   height: auto;
   display: flex;
   align-items: center;
-  color: white;
   &:after{
     position: absolute;
     content: "";
     transition: all 0.3s ease;
-    background-color: rgba(0,0,0,.6);
-    backdrop-filter: blur(10px);
+    background-color: rgba(255,255,255,.9);
     top: 110%;
     left: 10px;
     bottom: 10px;
@@ -474,7 +462,7 @@ export const BlockPortfolio = Styled.div`
     }
     ${PortfolioInfo}{
       opacity: 1;
-      transform: translateY(-50%);
+      transform: translateY(0px);
       transition: all .3s ease-in-out;
     }
   }
@@ -511,11 +499,8 @@ export const CounterTimeline = Styled.span`
 `;
 
 export const Section = Styled.section`
-  padding: 35px 0px;
+  padding: 150px 0px;
   width: 100%;
-  @media (min-width: 768px){
-    padding: 150px 0px;
-  }
 `;
 export const BoxedLeft = Styled.div`
   position: absolute;
@@ -529,53 +514,35 @@ export const Boxed = Styled.div`
   z-index: -2;
   right: 7vw;
   height: 400px;
-  top: calc(70% - 200px);
+  top: calc(50% - 200px);
 `;
 export const StyledImg = Styled.img`
-  width: 100%;  
-  @media (min-width: 768px){
-    max-width: 550px;
-    position: absolute;
-    z-index: -1;
-    right: 5vw;
-    opacity: 1
-  }
+  width: 550px;
+  position: absolute;
+  z-index: -1;
+  right: 5vw;
+  opacity: 1
 `;
 export const Heading = Styled.h1`
-  font-size: 4rem;
-  @media (min-width: 768px){
-    font-size: 7rem;
-    margin-bottom: 2rem;
-    color: #bfbfbf;
-  }
+  font-size: 7rem;
+  margin-bottom: 2rem;
+  color: #bfbfbf;
 `;
 
 export const ScaledStyled1 = Styled.h2`
-  font-size: 2rem;
-  margin: 10px;
-  @media (min-width: 768px){
-    font-size: 4rem;
-    margin: 20px;
-    color: white;
-  }
+  font-size: 4rem;
+  margin: 20px;
+  color: white;
 `;
 export const ScaledStyled2 = Styled.h2`
-  font-size: 2rem;
-  margin: 10px;
-  @media (min-width: 768px){
-    font-size: 4rem;
-    margin: 20px;
-    color: #bfbfbf;
-  }
+  font-size: 4rem;
+  margin: 20px;
+  color: #bfbfbf;
 `;
 export const ScaledSmaller = Styled.h2`
-  margin: 10px;   
-  font-size: 2rem;
-  @media (min-width: 768px){
-    font-size: 4rem;
-    margin: 20px;
-    color: #bfbfbf;
-  }
+  font-size: 4rem;
+  margin: 20px;
+  color: #bfbfbf;
 `;
 
 // Time Line 
@@ -588,13 +555,8 @@ export const TimeLineTitle = Styled.h4`
   font-weight: bolder;
   color: #bfbfbf;
 `;
-export const TimeLineList = Styled.li`
-  @media (min-width: 768px){
-    flex: 1 0;
-  }
-  width: 100%;
-`;
 export const TimeLineContent = Styled.div`
+  height: 330px;
   display: flex;
   flex-wrap: wrap;
   padding: 25px;

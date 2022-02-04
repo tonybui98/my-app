@@ -15,7 +15,7 @@ import Validator from 'validator';
 const AddressMap = () => {
   return (
       <div className="google-map-code">
-        {Parser(`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.8945098927993!2d106.69244581531642!3d10.819384361356617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528ec2d485255%3A0x2dd2ba4127c38822!2zMzE4LCAxNiDEkC4gUGhhbiBWxINuIFRy4buLLCBQaMaw4budbmcgMTEsIELDrG5oIFRo4bqhbmgsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1642642547511!5m2!1svi!2s" width="100%" height="380" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`)}
+        {Parser(`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.8945098927993!2d106.69244581531642!3d10.819384361356617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528ec2d485255%3A0x2dd2ba4127c38822!2zMzE4LCAxNiDEkC4gUGhhbiBWxINuIFRy4buLLCBQaMaw4budbmcgMTEsIELDrG5oIFRo4bqhbmgsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1642642547511!5m2!1svi!2s" width="100%" height="480" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`)}
       </div>
   );
 }
@@ -224,15 +224,12 @@ const Contact = () => {
 
 export default Contact;
 export const ContactWrapper = Styled.div`
-  background: #e1dbc9;
   padding: 30px;
   height: 100%;
   border-bottom: 2px solid black;
 `;
 export const SectionContact = Styled.section`
-  background: #f0f2f5;  
   width: 100%;
-  background: whitesmoke;
   padding: 50px 0px;
 `;
 export const Icon = Styled.div`

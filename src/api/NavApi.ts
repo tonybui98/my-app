@@ -56,6 +56,6 @@ export const MenuItems = [
     path: '/dich-vu/',
   },{
     name: 'Liên hệ',
-    path: '/dich-vu/',
+    path: '/contact/',
   },
 ]

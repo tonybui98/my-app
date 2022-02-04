@@ -176,23 +176,19 @@ const Footer = () => {
 export default Footer;
 
 export const IntroduceSection = Styled.section`
-  background: black;
-  color: white;
 `;
 export const FooterBottom = Styled.div`
-  background: black;
   color: white;
   padding: 5px 0px;
   font-size: .96rem;
 `;
 
 export const FooterSection = Styled.section`
-  background: #e1dbc9;
   padding: 75px 0px 50px 0px;
 `;
 export const StyledLink = Styled(Link)`
   text-decoration: unset;
-  color: black;
+  color: #bfbfbf;
 `;
 export const Sep = Styled.span`
   width: 40px;

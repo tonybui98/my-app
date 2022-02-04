@@ -36,7 +36,7 @@ export const TemplatesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(templatesAsync.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'idle';
       })
       .addCase(templatesAsync.fulfilled, (state, action) => {
         state.status = 'loaded';

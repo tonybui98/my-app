@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 import Styled from 'styled-components';
 import axios from 'axios';
 import ReactHtmlParser from 'react-html-parser'
+
 const FetchURL:string = 'https://southteam.vn/wp-json/wp/v2/categories?term=danh-muc';
 
 const ListResultTerm = (props:any) => {
@@ -122,25 +123,15 @@ const SearchForm = () => {
         Submit();
       }}>
         <InputGroup>
-          <Form.Select className={"selection"} aria-label="Default select example" onChange={(e) => setSearchCategory(e.target.value)}>
-            <option value="0" selected>Lựa chọn danh mục</option>
-            {
-              listCategory.map((val: DataInterface, index:number) => {
-                return(
-                  <option key={index} value={val.term_id}>{val.name}</option>
-                )
-              })
-            }
-          </Form.Select>
           <Form.Control 
-              className="bg-light"
+              className="bg-light rounded-0"
               type="text"
               id="inputSeach"
               value={searchQuery.searchParams} onChange={(e:any) => handleSearchQuery(e)}
             />
           <Button 
             type="submit"
-            variant="dark">
+            variant="dark rounded-0">
               <SearchOutline color="white"/>
               </Button>
           </InputGroup>
@@ -155,7 +146,7 @@ const SearchForm = () => {
           </SearchResult>
       }
       {
-        countSearchResult > 20 ? <p className="mt-3 fw-bolder text-center"><Link className="text-dark text-decoration-none" to={searchQuery.searchParams ? '/tim-kiem/?search=' + searchQuery.searchParams : ''}>Tìm kiếm nhiều hơn</Link></p> : ''
+        countSearchResult > 20 ? <p className="mt-3 fw-bolder text-center"><Link className="text-decoration-none" to={searchQuery.searchParams ? '/tim-kiem/?search=' + searchQuery.searchParams : ''}>Tìm kiếm nhiều hơn</Link></p> : ''
       }
     </>
   )
@@ -168,7 +159,6 @@ export const SearchResult = Styled.div`
 `;
 export const ListResult = Styled.li`
   margin-bottom: 17px;
-  background: #ebebeb;
   padding: 10px;
   border-radius: 0.25rem;
 `;
@@ -182,11 +172,12 @@ export const ResultTitle = Styled(Link)`
   color: black;
   text-transform: uppercase;
   text-decoration: unset;
+  color: #bfbfbf;
 `;
 export const StyledTermLink = Styled(Link)`
   background: #333333;
   font-size: 10px;
-  color: white;
+  color: #bfbfbf;
   text-decoration: unset;
   display: inline-block;
   padding: 2px 5px;

@@ -23,7 +23,6 @@ const ListTemplates = (props:PropertiveInteface) => {
 export default ListTemplates;
 
 export const TemplatesThumbnail = Styled.div`
-  border-radius: 5px;
   margin-bottom: 15px;
   height: 300px;
   overflow: hidden;

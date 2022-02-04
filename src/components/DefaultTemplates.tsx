@@ -56,7 +56,6 @@ export const StyledTermLink = Styled(Link)`
   text-decoration: unset;
   display: inline-block;
   padding: 2px 5px;
-  border-radius: 5px;
   margin-right: 5px;
 `;
 
@@ -64,7 +63,6 @@ export const Templates = Styled.div`
   box-shadow: 0px 0px 5px -3px;
   margin-bottom: 45px;
   background: white;
-  border-radius: 5px;
   &:hover{
     img{
       box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
@@ -81,7 +79,7 @@ export const TemplatesThumbnail = Styled.div`
 export const TemplatesTitle = Styled.div`
   a{
     font-size: 18px;
-    color: black;
+    color: #bdbdbd;
     text-decoration: none;
   }
 `;

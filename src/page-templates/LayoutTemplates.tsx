@@ -14,7 +14,6 @@ const LayoutTemplates = () => {
 
 export default LayoutTemplates
 export const Section = Styled.section`
-  background-color: #f0f2f5;
   width: 100%;
   padding: 50px 0px;
 `

@@ -50,11 +50,9 @@ const SingleLayout = () => {
   useEffect(() => {
     if(PostStatus == 'idle' || currentState != location.pathname){
       dispatch(fetchPosts(FetchURL));
-      console.log('truoc:', currentState);
     }
     if(PostStatus == 'loaded' || currentState != location.pathname){
       setCurrentState(location.pathname);
-      console.log('sau:',currentState);
       setSingleData(DataPost);
     }
   }, [dispatch, DataPost, location.pathname]);
@@ -62,7 +60,7 @@ const SingleLayout = () => {
   interface CategoryType{
     name: string
   }
-  console.log(singleData);
+
   if(singleData != undefined){
     let NewTermString:string = '';
     for (const iterator of singleData.term) {
@@ -85,51 +83,52 @@ const SingleLayout = () => {
           <IntroductSection>
             <Container>
               <Row>
-                <Col xs={12} md={4}>
-                  <div className='shadow p-3 rounded'>
+                <Col className='order-2 order-md-1' xs={12} md={4}>
                     <ListGroup>
-                      <ListGroup.Item>
+                      <StyledListGroup>
                       <CheckboxOutline
                           cssClasses={'me-2'}
                           color={'#27ae60'}
                           height="25px"
                           width="25px"
                         />
-                        {singleData.title.rendered} là {NewTermString}, được thiết kế chuyên nghiệp đẹp mắt với đầy đủ chức năng.</ListGroup.Item>
-                      <ListGroup.Item>
+                        {singleData.title.rendered} là {NewTermString}, được thiết kế chuyên nghiệp đẹp mắt với đầy đủ chức năng.
+                      </StyledListGroup>
+                      <StyledListGroup>
                       <CheckboxOutline
                           cssClasses={'me-2'}
                           color={'#27ae60'}
                           height="25px"
                           width="25px"
                         />
-                        Giao diện tối ưu giúp load cực nhanh.</ListGroup.Item>
-                      <ListGroup.Item>
+                        Giao diện tối ưu giúp load cực nhanh.
+                      </StyledListGroup>
+                      <StyledListGroup>
                       <CheckboxOutline
                           cssClasses={'me-2'}
                           color={'#27ae60'}
                           height="25px"
                           width="25px"
                         />
-                        Chuẩn SEO 100% dễ dàng lên TOP google.</ListGroup.Item>
-                      <ListGroup.Item>
+                        Chuẩn SEO 100% dễ dàng lên TOP google.
+                      </StyledListGroup>
+                      <StyledListGroup>
                       <CheckboxOutline
                           cssClasses={'me-2'}
                           color={'#27ae60'}
                           height="25px"
                           width="25px"
                         />
-                        Giao diện tương thích với mọi thiết bị.</ListGroup.Item>
-                      <ListGroup.Item>
+                        Giao diện tương thích với mọi thiết bị.</StyledListGroup>
+                      <StyledListGroup>
                       <CheckboxOutline
                           cssClasses={'me-2'}
                             color={'#27ae60'} 
                             height="25px"
                             width="25px"
                           />
-                      Bạn có thể tự chỉnh sửa bố cục nội dung với giao diện Drop & Drag.</ListGroup.Item>
+                      Bạn có thể tự chỉnh sửa bố cục nội dung với giao diện Drop & Drag.</StyledListGroup>
                     </ListGroup>
-                    <div>
                         <Button size={'lg'} 
                                 variant={'danger w-100 my-3 text-uppercase fw-bolder'}
                                 onClick={handleShow}
@@ -156,10 +155,8 @@ const SingleLayout = () => {
                               Trải nghiệm
                           </Button>
                         </a>
-                    </div>
-                  </div>
                 </Col>
-                <Col xs={12} md={8}>
+                <Col className='order-1 order-md-2 mb-4' xs={12} md={8}>
                   <ScreenView>
                     <DesktopView>
                         <DesktopHeader>
@@ -183,7 +180,7 @@ const SingleLayout = () => {
             </Row>
             </Container>
           </IntroductSection>
-          <Section className="bg-light">
+          <Section>
             <Container className="m-auto">
                 <Row className="align-items-center">
                     <Col xs={12} md={4}>
@@ -207,7 +204,7 @@ const SingleLayout = () => {
                 </Row>
             </Container>
           </Section>
-          <Section className="bg-whitesmoke">
+          <Section>
               <Container className="m-auto">
                   <Row className="align-items-center">
                       <Col xs={12} md={8}>
@@ -231,7 +228,7 @@ const SingleLayout = () => {
                   </Row>
             </Container>
         </Section>
-        <Section className="bg-whitesmoke">
+        <Section>
           <Container className="m-auto">
               <Row className="align-items-center">
                   <Col xs={12} md={4}>
@@ -273,26 +270,29 @@ const SingleLayout = () => {
     )
   } else{
     return (
-      <h1>Đang tải</h1>
+      <h1 className='text-center'>Đang tải...</h1>
     );
   }
 }
 
 export default SingleLayout;
+export const StyledListGroup = Styled(ListGroup.Item)`
+  background: unset;
+  color: #bcbcbc;
+`;
 export const Sep = Styled.span`
   width: 60px;
   height: 3px;
-  background: black;
   display: block;
   margin: 20px 0px;
   border-radius: 4px;
+  color: red;
 `;
 export const Section = Styled.section`
   padding: 75px 0px;
 `;
 export const HeadingSection = Styled.section`
   padding: 50px 0px;
-  background : #ab9676;
   background-side: cover;
 `;
 export const StyledH1 = Styled.h1`
@@ -347,5 +347,4 @@ export const DesktopView = Styled.div`
 `
 export const IntroductSection = Styled.section`
   padding: 50px 0px;      
-  background: whitesmoke;
 `;

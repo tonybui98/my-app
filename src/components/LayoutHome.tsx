@@ -14,13 +14,35 @@ import DefaultTemplates from './DefaultTemplates';
 import ListTemplates from './ListTemplates';
 
 import {Row, Col, FormSelect, Button, InputGroup} from 'react-bootstrap';
-import  Styled from 'styled-components';
+import  Styled, { createGlobalStyle } from 'styled-components';
 import {Link} from 'react-router-dom'
 import {ListOutline, GridOutline} from 'react-ionicons';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import ReactPaginate from 'react-paginate';
+
+const LayoutLoading = (props:any) => {
+  let Loading = [];
+  for (var i = 0; i < props.perpage; i++) {
+      // note: we are adding a key prop here to allow react to uniquely identify each
+      // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
+      Loading.push(
+        <div className='col-6 col-md-4 mb-3' key={i}>
+           <div className="linear-background">
+           <div className="inter-right--top"></div>
+        </div>
+        </div>);
+  }
+  return(
+    <>
+      <GlobalStyle />
+      <div className='row'>
+        {Loading}
+      </div>
+    </>
+  );
+}
 
 const LayoutHome = () => { 
 
@@ -42,8 +64,6 @@ const LayoutHome = () => {
   let FetchDataURL:string = `https://southteam.vn/wp-json/wp/v2/mau-website-demo?per_page=${perpage}&page=${currentPage ? currentPage : 1}`;
   let FetchCategoryURL:string = 'https://southteam.vn/wp-json/wp/v2/categories?term=danh-muc';
   
-  const Flip = require('react-reveal/Flip');
-
   useEffect(() => {
     if(statusPosts === 'idle'){
       dispatch(templatesAsync(FetchDataURL));
@@ -64,16 +84,9 @@ const LayoutHome = () => {
     dispatch(templatesAsync(FetchDataURL));
   }, [perpage , currentPage, totalNumberPost, totalPage]);
   
-  useEffect(() =>{
-    console.log(isList);
-  }, [isList])
-
   const handlePageClick = (event:any) => {
     window.scrollTo(0, 0);
     const newOffset = (event.selected * 5) % 120;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setCurrentPage(event.selected + 1);
   };
 
@@ -106,9 +119,9 @@ const LayoutHome = () => {
   return (
     <Row>
         <Col xs={12}>
-            <Row className="mb-3 align-items-center py-3">
+            <Row className="align-items-center py-3 my-3">
               <Col>
-                  <Button variant='outline-dark me-2 mb-0' onClick={() => {setIsList(true)}}>
+                  <Button variant='outline-light me-2 mb-0' onClick={() => {setIsList(true)}}>
                     <ListOutline
                         color={'#00000'} 
                         title={'Layout Ngang'}
@@ -116,7 +129,7 @@ const LayoutHome = () => {
                         width="22px"
                       />
                   </Button>
-                  <Button variant='outline-dark mb-0' onClick={() => {setIsList(false)}}>
+                  <Button variant='outline-light mb-0' onClick={() => {setIsList(false)}}>
                     <GridOutline
                       color={'#00000'} 
                       title={'Gallery'}
@@ -127,7 +140,7 @@ const LayoutHome = () => {
                 </Col>
                 <Col>
                   <InputGroup>
-                      <FormSelect className={"selection"} aria-label="Default select example">
+                      <FormSelect className={"selection rounded-0 me-2"} aria-label="Default select example">
                         <option value="0" selected>Lựa chọn danh mục</option>
                         {
                           listCategories.map((val: DataInterface, index:number) => {
@@ -137,7 +150,7 @@ const LayoutHome = () => {
                           })
                         }
                       </FormSelect>
-                      <FormSelect className='' onChange={(e) => {setPerpage(Number(e.target.value))}}>
+                      <FormSelect className='rounded-0' onChange={(e) => {setPerpage(Number(e.target.value))}}>
                         <option selected value="12">Lựa chọn số lượng</option>
                         <option value="24">16 mỗi trang</option>
                         <option value="30">24 mỗi trang</option>
@@ -146,7 +159,8 @@ const LayoutHome = () => {
                     </InputGroup>
                 </Col>
             </Row>
-            <ul className='row p-0 position-relative'>
+            { statusPosts !== 'idle'?
+            <ul className='row p-0 position-relative mt-3'>
               {listTemplates.map((val : LabeledValue, index:number) => {
                 return(
                     <li className={isList ? 'd-block col-12 col-md-6' : 'd-block col-6 col-md-4'} >
@@ -157,7 +171,8 @@ const LayoutHome = () => {
                     </li>
                   )
                 })}
-              </ul>
+              </ul> : <LayoutLoading perpage={perpage}/>
+              }
             <Col xs={12}>
                 <StyledReactPaginate
                   breakLabel="..."
@@ -176,6 +191,55 @@ const LayoutHome = () => {
 
 
 export default LayoutHome;
+export const GlobalStyle = createGlobalStyle`
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
+
+.linear-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 1000px 104px;
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+.inter-draw{
+  background: #FFF;
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: 100px;
+}
+.inter-right--top{
+  background: #FFF;
+  width: 100%;
+  height: 20px;
+}
+.inter-right--bottom{
+  background: #FFF;
+  width: 100%;
+  height: 50px;
+}
+.inter-crop{
+  background: #FFF;
+  width: 20px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 100px;
+}
+`
 export const StyledReactPaginate = Styled(ReactPaginate)`
   text-align: center;
   li{
@@ -195,11 +259,10 @@ export const StyledReactPaginate = Styled(ReactPaginate)`
       display: block;
       min-width: 30px;
       padding: 2px 5px;
-      background: #717d8a;
-      color: white !important;
+      background: #191919;
+      color: #bfbfbf !important;
       text-decoration: unset;
       margin: 2px;
-      border-radius: 5px;
       transition: all .3s ease-in-out;
       &:hover{
         background: #e1dbc9;
@@ -222,5 +285,4 @@ export const Counter = Styled.span`
   height: 20px;
   text-align: center;
   line-height: 20px;
-  border-radius: 50%;
 `;

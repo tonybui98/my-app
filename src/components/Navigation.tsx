@@ -1,48 +1,20 @@
 import { MenuItems } from '../api/NavApi';
-import Styled , {css, createGlobalStyle} from 'styled-components';
-import { Link } from 'react-router-dom';
-import { bubble as Menu } from 'react-burger-menu';
-import { Nav, NavDropdown, Button} from 'react-bootstrap';
-import { ChevronDownOutline , SearchOutline} from "react-ionicons";
+import Styled , { css } from 'styled-components';
+import { Link, useLocation } from 'react-router-dom';
+import { Nav } from 'react-bootstrap';
+import { ChevronDownOutline } from "react-ionicons";
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { showMobileMenu, ShowMobileMenuState } from '../api/MobileMenuSlice';
 import { useEffect, useState } from 'react';
+import { useSpring, animated } from 'react-spring'
+import { GridLine } from '../App';
+import { Box } from '../decorations/Box';
+const Fade = require('react-reveal/Fade');
+const Reveal = require('react-reveal/Reveal');
 
-export const Navigation = () => {
-  return(
-    <Nav>
-    {
-      MenuItems.map((val:any, index:number) => {
-        return(
-          <Nav.Item key={index}>
-            {
-              val.submenu != undefined ?
-              <NavItemsDropDown className={'nav-item position-relative rotationDropdown'}>
-                <Nav>
-                  <Link className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link>
-                  <ChevronDownOutline color={'white'}/>
-                </Nav>
-                 <Nav.Item className="rotationDropdownItems">
-                  {
-                    val.submenu.map((val:any, index:number) => {
-                      return(
-                        <Nav key={index}><Link className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link></Nav>
-                      );
-                    })
-                  }
-                  </Nav.Item>
-              </NavItemsDropDown>
-              : <Nav>
-                  <Link className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link>
-                </Nav>
-            }
-          </Nav.Item>
-        );
-      })
-    }
-  </Nav>
-  );
-}
+const calc = (x:any, y:any) => [x - window.innerWidth / 2, y - window.innerHeight / 2]
+const trans1 = (x:any, y:any) => `translate3d(${ - x / 20}px,-${ - y / 20}px,0)`
+const trans4 = (x:any, y:any) => `translate3d(${x / 25}px,${y / 25}px,0)`
 
 export const Buger = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +24,6 @@ export const Buger = () => {
     setClassBurger(isMobileShow ? 
       'hamburger hamburger--elastic js-hamburger is-active' : 
       'hamburger hamburger--elastic js-hamburger');
-    console.log(isMobileShow);  
   },[dispatch, isMobileShow])
 
   return(
@@ -67,46 +38,50 @@ export const Buger = () => {
   );
 }
 export const MobileNavigation = (props:{open:boolean}) => {
-  const dispatch = useAppDispatch();
+  const pathname = useLocation().pathname;
+  const [prop, set] = useSpring(() => ({ xy: [0, 0], config: { mass: 10, tension: 550, friction: 140 } }))
   return(
-      <Menu 
-      burgerButtonClassName={ "d-none" }
-      className='px-0'
-      isOpen={ props.open } 
-      onClose= {() => dispatch(showMobileMenu(false))}
-      pageWrapId={ "page-wrap" } 
-      outerContainerId={ "outer-container" }>
-         <GlobalStyle />
+      <Menu>
          <MobileBuger>
             <Buger />
          </MobileBuger>
-         <MobileMenuWrapper>
-        {
-           MenuItems.map((val:any, index:number) => {
-            return(
-              <StyledMobileNav className="w-100" key={index}>
-                  {
-                    val.submenu != undefined ?
-                    <MobileSubLink>
-                      <Link className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link>
-                      <NavDropdown title={<ChevronDownOutline color={'white'} width={'15px'} height={'15px'}/>} id="basic-nav-dropdown">
-                        {
-                            val.submenu.map((val:any, index:number) => {
-                              return(
-                                <Link key={index} className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link>
-                              );
-                            })
-                          }
-                      </NavDropdown>
-                    </MobileSubLink>
-                    : 
-                      <Link className='px-3 text-light text-decoration-none' to={val.path} state="page">{val.name}</Link>
-                  }
-                </StyledMobileNav>
-              );
-           })
-        }
+         <MobileMenuWrapper onMouseMove={({ clientX: x, clientY: y }) => set({ xy: calc(x, y) })}>
+           <MobileMenuList>
+                {
+                  MenuItems.map((val:any, index:number) => {
+                    return(
+                      <StyledMobileNav key={index}>
+                          <Reveal effect={index % 2 == 0 ? 'fadeInLeft' : 'fadeInRight'} spy={props.open}>
+                              <Link 
+                                className={val.path == pathname ? 
+                                  'px-3 text-light text-decoration-none actived' :
+                                  'px-3 text-light text-decoration-none'
+                                } to={val.path} state="page">
+                                  <animated.span className='d-inline-block' style={{ transform: prop.xy.interpolate(trans4) }}>
+                                        {val.name}
+                                  </animated.span>
+                              </Link>
+                          </Reveal>
+                        </StyledMobileNav>
+                      );
+                  })
+                }
+          </MobileMenuList>
         </MobileMenuWrapper>
+        <MenuBox>
+          <Fade spy={props.open}>
+              <animated.div style={{ transform: prop.xy.interpolate(trans1) }}>
+                <Box />
+              </animated.div> 
+          </Fade>
+        </MenuBox>
+        <div className='fragment'>
+            <GridLine />
+            <GridLine />
+            <GridLine />
+            <GridLine />
+            <GridLine />
+        </div>
     </Menu>
   );
 }
@@ -163,26 +138,82 @@ const Rotation = () => {
 
   return css`${styles}`;
 }
-export const MobileMenuWrapper = Styled.div`
-  margin-top: 50px;
-  position: relative;
+export const MenuBox = Styled.div`
+  position: absolute;
+  right: 30%;
+  z-index: 1;
+  transform: scale(.7);
+  pointer-events: none;
 `;
-export const MobileBuger = Styled.div`
+export const Menu = Styled.div`
+  margin-top: 50px;
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999999;
+  background: black;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+export const MobileMenuList = Styled.div`
+  max-width: 860px;
+  margin: auto;
+`;
+export const MobileMenuWrapper = Styled.div`
+  padding-top: 50px;
+  position: fixed;
+  background: rgb(0 0 0 / 45%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+export const MobileBuger = Styled.div`
+  position: fixed;
+  top: 25px;
+  right: .5rem;
   height: 50px;
   z-index: 2;
-  background: #141414;
-  display: flex !important;
-  justify-content: flex-end;
 `;
-export const StyledMobileNav = Styled(Nav)`
+export const StyledMobileNav = Styled.div`
+  width: 50%;
+  display: inline-block;
   a{
+    position: relative;
     padding: 5px 0px;
     display: block;
-    width: 200px;
+    width: 100%;
+    font-size: 2rem;
+    span{
+      font-family: 'Josefin Sans', sans-serif;
+      position: relative;
+      &:after{
+        content: "";
+        width: 0px;
+        height: 3px;
+        background: red;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left:0;
+        transition: all .3s ease-in-out;
+      }
+    }
+    &:hover span{
+      color: red;
+      &:after{
+        width: 100%;
+        transition: all .3s ease-in-out;
+      }
+    }
   }
 `
 export const NavItemsDropDown = Styled.div`
@@ -202,7 +233,8 @@ export const NavItemsDropDown = Styled.div`
 
 export const MobileSubLink = Styled.div`
   position: relative;
-  width: 100%;
+  width: 48%;
+  display: inline-block;
   & a{
     padding: 5px 40px 5px 0px;
   }
@@ -216,7 +248,7 @@ export const MobileSubLink = Styled.div`
   }
   #basic-nav-dropdown{
     position: absolute;
-    right: -30px;
+    right: 0px;
     top: -30px;
     background: black;
     height: 30px;
@@ -228,77 +260,3 @@ export const MobileSubLink = Styled.div`
     }
   }
 `;
-
-const GlobalStyle = createGlobalStyle`
-.hamburger {
-  padding: 15px 15px;
-  display: inline-block;
-  cursor: pointer;
-  transition-property: opacity, filter;
-  transition-duration: 0.15s;
-  transition-timing-function: linear;
-  font: inherit;
-  color: inherit;
-  text-transform: none;
-  background-color: transparent;
-  border: 0;
-  margin: 0;
-  overflow: visible; }
-  .hamburger:hover {
-    opacity: 0.7; }
-  .hamburger.is-active:hover {
-    opacity: 0.7; }
-  .hamburger.is-active .hamburger-inner,
-  .hamburger.is-active .hamburger-inner::before,
-  .hamburger.is-active .hamburger-inner::after {
-    background-color: #fff; }
-
-.hamburger-box {
-  width: 30px;
-  height: 24px;
-  display: inline-block;
-  position: relative; }
-
-.hamburger-inner {
-  display: block;
-  top: 50%;
-  margin-top: -2px; }
-  .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-    width: 30px;
-    height: 2px;
-    background-color: white;
-    border-radius: 4px;
-    position: absolute;
-    transition-property: transform;
-    transition-duration: 0.15s;
-    transition-timing-function: ease; }
-  .hamburger-inner::before, .hamburger-inner::after {
-    content: "";
-    display: block; }
-  .hamburger-inner::before {
-    top: -10px; }
-  .hamburger-inner::after {
-    bottom: -10px; }
-    /*
-   * Elastic
-   */
-.hamburger--elastic .hamburger-inner {
-  top: 2px;
-  transition-duration: 0.275s;
-  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-  .hamburger--elastic .hamburger-inner::before {
-    top: 10px;
-    transition: opacity 0.125s 0.275s ease; }
-  .hamburger--elastic .hamburger-inner::after {
-    top: 20px;
-    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-
-.hamburger--elastic.is-active .hamburger-inner {
-  transform: translate3d(0, 10px, 0) rotate(135deg);
-  transition-delay: 0.075s; }
-  .hamburger--elastic.is-active .hamburger-inner::before {
-    transition-delay: 0s;
-    opacity: 0; }
-  .hamburger--elastic.is-active .hamburger-inner::after {
-    transform: translate3d(0, -20px, 0) rotate(-270deg);
-    transition-delay: 0.075s; }`;

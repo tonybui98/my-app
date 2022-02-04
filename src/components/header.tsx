@@ -1,17 +1,16 @@
-import {useEffect} from 'react';
-import {Link, useLocation } from "react-router-dom";
-import { useAppDispatch } from '../app/hooks';
-import {showModal, ShowModalState} from '../api/ModalSearch';
-import {showMobileMenu , ShowMobileMenuState} from '../api/MobileMenuSlice';
-import { useSelector } from 'react-redux';
-import { Container, Navbar , Button, Modal} from 'react-bootstrap';
-import { SearchOutline } from "react-ionicons";
-
 import logo from '../imgs/logo.png';
 import SearchForm from './searchForm';
 import Styled, { createGlobalStyle }  from 'styled-components';
-import { Navigation, Buger } from './Navigation';
-import {useWindowWidth} from "@react-hook/window-size";
+import { useEffect} from 'react';
+import { Link, useLocation } from "react-router-dom";
+import { useAppDispatch } from '../app/hooks';
+import { showModal, ShowModalState} from '../api/ModalSearch';
+import { showMobileMenu } from '../api/MobileMenuSlice';
+import { useSelector } from 'react-redux';
+import { Navbar , Button } from 'react-bootstrap';
+import { SearchOutline, CloseOutline } from "react-ionicons";
+import { Buger } from './Navigation';
+import { GridLine } from '../App';
 
 const SearchNavigation = () => {
   return (
@@ -24,58 +23,90 @@ const SearchNavigation = () => {
 const Header = () => {
   const dispatch = useAppDispatch();
   const isShowModal = useSelector(ShowModalState);
-  const isMobileShow = useSelector(ShowMobileMenuState);
   const location = useLocation();
-  const width:number = useWindowWidth();
 
   useEffect(() => {
     dispatch(showModal(false));
     dispatch(showMobileMenu(false));
   },[dispatch, location.pathname])
 
-  const handleClose = () => dispatch(showModal(false));
-  
   return(
     <>  
       <GlobalStyle />
         <HeaderContainer>
-          <Container>
-            <Navbar className='align-items-center justify-content-between'>
+            <Navbar className='align-items-center justify-content-between px-3'>
               <Navbar.Brand href="#home">
                 <Link to={'/'}>
                   <img src={logo} height={'60px'} className="App-logo" alt="logo" />
                 </Link>
               </Navbar.Brand>
-              {width <= 855 ? "" : <Navigation /> }
               <FlexButton>
-                <Button variant='outline-dark' onClick={() => dispatch(showModal(isShowModal ? false : true))}>
+                <Button variant='outline-dark border-0' onClick={() => dispatch(showModal(isShowModal ? false : true))}>
                   <SearchOutline color={'white'}/> 
                 </Button>
-                {width <= 855 ? <Buger /> : '' }
+                <Buger />
               </FlexButton>
             </Navbar> 
-            </Container>
         </HeaderContainer>
-        <Modal 
-          show={isShowModal} 
-          onHide={handleClose} 
-          animation={true}
-          size="lg"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title className="fw-bolder">Tìm kiếm giao diện mẫu</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <SearchNavigation />  
-          </Modal.Body>
-        </Modal>
+        {
+          isShowModal ? 
+          <StyledModal>
+            <StyledButton variant='outline-dark border-0' onClick={() => dispatch(showModal(isShowModal ? false : true))}>
+              <CloseOutline color={'white'}/> 
+            </StyledButton>
+            <SearchBackground>
+              <SearchContent>
+                  <h3 className="fw-bolder my-3 text-center">Tìm kiếm giao diện mẫu</h3>
+                  <SearchNavigation /> 
+                </SearchContent> 
+              </SearchBackground>
+              <div className='fragment'>
+                <GridLine />
+                <GridLine />
+                <GridLine />
+                <GridLine />
+                <GridLine />
+              </div>
+          </StyledModal>
+          : ''
+        }
       </>
   );
   
 }
 
 export default Header;
+export const StyledButton = Styled(Button)`
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 99;
+`;
+export const SearchBackground = Styled.div`
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: rgb(0 0 0 / 45%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const SearchContent = Styled.div`
+  position: relative;   
+  max-width: 100%;
+  width: 680px;
+`;
+export const StyledModal = Styled.div`
+  border-radius: 0px;
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right:0;
+  bottom: 0;
+  z-index: 999999;
+`;
 export const FlexButton = Styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -83,8 +114,11 @@ export const FlexButton = Styled.div`
   collumn-gap: 10px;
 `;
 export const HeaderContainer = Styled.div`
-  background: black;
-  border-bottom: 2px solid #585442;
+  background: rgb(0 0 0 / 25%);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  z-index: 999;
+  width: 100%;
 `
 export const SearchContainer = Styled.div`
   width: 100%;
